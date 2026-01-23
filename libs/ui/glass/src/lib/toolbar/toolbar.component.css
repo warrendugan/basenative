@@ -1,0 +1,14 @@
+.glass-toolbar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  align-items: center;
+}
+
+.glass-toolbar[orientation='vertical'] {
+  flex-direction: column;
+}
