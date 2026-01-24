@@ -1,14 +1,14 @@
 {
   "name": "@basenative/ui-glass",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "peerDependencies": {
     "@angular/core": "^21.0.0",
     "@angular/common": "~21.0.0",
-    "@basenative/tokens": "0.12.1",
+    "@basenative/tokens": "0.13.0",
     "@angular/router": "~21.0.0",
     "rxjs": "~7.8.0",
     "@angular/platform-browser": "~21.0.0",
-    "@basenative/forms": "0.12.1"
+    "@basenative/forms": "0.13.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/",

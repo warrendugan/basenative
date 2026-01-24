@@ -1,6 +1,6 @@
 {
   "name": "@basenative/greenput-ui",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "dependencies": {
     "tslib": "^2.3.0"
   },
