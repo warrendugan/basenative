@@ -80,7 +80,7 @@ jobs:
         run: npm ci
 
       - name: Validate TypeScript
-        run: npx tsc --noEmit
+        run: npx tsc --noEmit --project apps/greenput-api/tsconfig.json
 
       - name: Build greenput-api Worker
         run: npx nx build greenput-api --configuration=production
@@ -161,6 +161,13 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Run D1 migrations
+        uses: cloudflare/wrangler-action@v3
+        with:
+          command: d1 migrations apply greenput-prod-db --remote --config apps/greenput-api/wrangler.toml
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Deploy greenput-api Worker
         uses: cloudflare/wrangler-action@v3

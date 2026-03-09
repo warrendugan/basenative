@@ -11,12 +11,9 @@
   "files": [],
   "include": [],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
+    { "path": "apps/greenput/tsconfig.app.json" },
+    { "path": "apps/duganlabs/tsconfig.app.json" },
+    { "path": "apps/showcase/tsconfig.app.json" }
   ],
   "extends": "./tsconfig.base.json"
 }

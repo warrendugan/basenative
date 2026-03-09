@@ -5,7 +5,6 @@ on:
     branches: [main]
     paths:
       - 'apps/greenput-api/**'
-      - 'apps/greenput-api/wrangler.toml'
       - '.github/workflows/deploy-worker.yml'
   workflow_dispatch:
 
@@ -38,7 +37,14 @@ jobs:
         run: npm ci
 
       - name: Validate TypeScript
-        run: npx tsc --noEmit
+        run: npx tsc --noEmit --project apps/greenput-api/tsconfig.json
+
+      - name: Run D1 migrations
+        uses: cloudflare/wrangler-action@v3
+        with:
+          command: d1 migrations apply greenput-prod-db --remote --config apps/greenput-api/wrangler.toml
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Build greenput-api Worker
         run: npx nx build greenput-api --configuration=production
@@ -49,21 +55,18 @@ jobs:
           command: deploy --config apps/greenput-api/wrangler.toml
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ env.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
 
       - name: Verify deployment
         run: |
           echo "Waiting for Worker to be live..."
           for i in {1..10}; do
             if curl -f --silent --max-time 5 https://api.duganlabs.com/health 2>/dev/null; then
-              echo "✓ Worker is live"
+              echo "Worker is live"
               exit 0
             fi
             echo "Attempt $i/10 - retrying in 5 seconds..."
             sleep 5
           done
-          echo "⚠ Worker health check did not respond after 10 attempts, but deployment may still be processing"
+          echo "Worker health check did not respond after 10 attempts"
           exit 0
         continue-on-error: true

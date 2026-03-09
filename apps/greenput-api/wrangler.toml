@@ -14,6 +14,7 @@ route = "api.duganlabs.com/*"
 binding = "DB"
 database_name = "greenput-prod-db"
 database_id = "56e32427-2991-40ac-b9a5-185c119866f4"
+migrations_dir = "migrations"
 
 # ----- KV Namespace (session tokens) -----
 [[kv_namespaces]]
