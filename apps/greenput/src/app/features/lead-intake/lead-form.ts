@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -94,10 +94,10 @@ export class LeadFormComponent {
     'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY',
   ] as const;
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router
-  ) {
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+
+  constructor() {
     this.form = this.createForm();
   }
 

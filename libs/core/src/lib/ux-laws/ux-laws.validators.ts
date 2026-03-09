@@ -87,7 +87,7 @@ export function assertChunkSize(
 export function measureLatency(
   operationName: string
 ): () => void {
-  if (!isDev) return () => {};
+  if (!isDev) return () => { /* noop in production */ };
   const start = performance.now();
 
   return () => {

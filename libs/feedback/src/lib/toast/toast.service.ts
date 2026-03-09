@@ -18,7 +18,7 @@ export class ToastService {
   private idCounter = 0;
   private dismissTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
-  show(message: string, type: ToastType, duration: number = 5000): void {
+  show(message: string, type: ToastType, duration = 5000): void {
     const id = `toast-${++this.idCounter}`;
     const toast: Toast = {
       id,

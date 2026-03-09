@@ -4,7 +4,7 @@
       class="toast"
       [class]="'toast-' + toast.type"
       role="alert"
-      @attr.aria-label="toast.message"
+      [attr.aria-label]="toast.message"
     >
       <div class="toast-content">
         <span class="toast-icon">{{ getIcon(toast.type) }}</span>
