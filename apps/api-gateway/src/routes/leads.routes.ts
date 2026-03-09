@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { ExtendedRequest, AuthPayload } from '../types';
 
 const router = Router();
@@ -54,7 +54,7 @@ const leadsStore: Record<string, Lead[]> = {
 };
 
 // Middleware to require authentication for leads routes
-function requireAuth(req: ExtendedRequest, res: Response, next: Function): void {
+function requireAuth(req: ExtendedRequest, res: Response, next: NextFunction): void {
   if (!req.user) {
     res.status(401).json({ error: 'Unauthorized' });
     return;

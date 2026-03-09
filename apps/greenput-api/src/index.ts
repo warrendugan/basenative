@@ -357,6 +357,7 @@ const calendarFeed: RouteHandler = async (_req, env, params, tenantId, corsHeade
     };
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const icsContent = await new Promise<string>((resolve, reject) => {
     createEvents(events as any, (err, value) => {
       if (err) reject(err);

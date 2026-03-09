@@ -94,6 +94,7 @@ export class MediaPage implements AfterViewInit {
       });
       this.shareStatus.set('Shared successfully!');
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
       this.shareStatus.set('Share cancelled or failed.');
     }

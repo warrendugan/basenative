@@ -30,7 +30,7 @@ interface Window {
 
 @Component({
   selector: 'section[editor-page]',
-
+  standalone: true,
   imports: [FeatureLayoutComponent, ButtonComponent, IconComponent, ToolbarComponent, ToolbarWidget],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
@@ -47,6 +47,7 @@ export class EditorComponent {
       const text = await file.text();
       this.content.set(text);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   }

@@ -135,8 +135,7 @@ export class Configurator {
       const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
 
       return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-    } catch (e) {
-      console.warn('Error resolving color:', cssValue, e);
+    } catch {
       return '#000000';
     }
   }

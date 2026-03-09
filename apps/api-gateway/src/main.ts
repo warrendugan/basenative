@@ -74,6 +74,7 @@ app.use((_req: ExtendedRequest, res: Response) => {
 
 // Error handler
 app.use((err: Error, _req: ExtendedRequest, res: Response) => {
+  // eslint-disable-next-line no-console
   console.error('Error:', err);
   res.status(500).json({
     error: 'Internal Server Error',
@@ -83,22 +84,28 @@ app.use((err: Error, _req: ExtendedRequest, res: Response) => {
 
 // Start server
 const server = app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`API Gateway listening on http://localhost:${port}`);
+  // eslint-disable-next-line no-console
   console.log(`Health check: http://localhost:${port}/api/health`);
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
+  // eslint-disable-next-line no-console
   console.log('SIGTERM received, shutting down gracefully...');
   server.close(() => {
+    // eslint-disable-next-line no-console
     console.log('Server closed');
     process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
+  // eslint-disable-next-line no-console
   console.log('SIGINT received, shutting down gracefully...');
   server.close(() => {
+    // eslint-disable-next-line no-console
     console.log('Server closed');
     process.exit(0);
   });

@@ -1,4 +1,4 @@
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { ExtendedRequest } from '../types';
 
 const router = Router();
@@ -163,7 +163,7 @@ const sweepRulesStore: Record<string, SweepRule[]> = {
 };
 
 // Middleware to require authentication
-function requireAuth(req: ExtendedRequest, res: Response, next: Function): void {
+function requireAuth(req: ExtendedRequest, res: Response, next: NextFunction): void {
   if (!req.user) {
     res.status(401).json({ error: 'Unauthorized' });
     return;
