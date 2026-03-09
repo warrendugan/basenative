@@ -1,9 +1,12 @@
+import { ToolbarWidget } from '@angular/aria/toolbar';
 import { Component, signal } from '@angular/core';
 import {
-  ButtonComponent,
-  FeatureLayoutComponent,
-  IconComponent,
+    ButtonComponent,
+    FeatureLayoutComponent,
+    IconComponent,
+    ToolbarComponent,
 } from '@basenative/ui-glass';
+
 
 interface FileSystemHandle {
   kind: 'file' | 'directory';
@@ -27,8 +30,8 @@ interface Window {
 
 @Component({
   selector: 'section[editor-page]',
-  standalone: true,
-  imports: [FeatureLayoutComponent, ButtonComponent, IconComponent],
+
+  imports: [FeatureLayoutComponent, ButtonComponent, IconComponent, ToolbarComponent, ToolbarWidget],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
 })

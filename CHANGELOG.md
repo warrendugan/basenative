@@ -1,3 +1,19 @@
+## 0.13.0 (2026-01-24)
+
+### 🚀 Features
+
+- Add initial HTML structure and robots.txt for the showcase application. ([625424c](https://github.com/basenative/basenative/commit/625424c))
+- add initial security headers and basic HTML structure for the showcase application ([840bff9](https://github.com/basenative/basenative/commit/840bff9))
+- add security HTTP headers via `_headers` file ([06c77fe](https://github.com/basenative/basenative/commit/06c77fe))
+- Add security headers to public assets via `_headers` file. ([9e84753](https://github.com/basenative/basenative/commit/9e84753))
+- Add HTTP security headers via `_headers` file. ([34371d0](https://github.com/basenative/basenative/commit/34371d0))
+- adopt @angular/aria for accessible toolbar and add ADR-001 ([748d977](https://github.com/basenative/basenative/commit/748d977))
+
+### ❤️ Thank You
+
+- Matthew Metcalfe
+- Warren Dugan
+
 ## 0.12.1 (2026-01-06)
 
 ### 🚀 Features

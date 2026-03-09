@@ -1,6 +1,6 @@
 {
   "name": "@basenative/data",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "peerDependencies": {},
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/",
