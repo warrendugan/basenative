@@ -27,7 +27,6 @@ export class LeadService {
         const errorMessage = err?.error?.error || 'Failed to load leads';
         this.error.set(errorMessage);
         this.loading.set(false);
-        console.error('Error loading leads:', err);
       },
     });
   }
@@ -45,7 +44,6 @@ export class LeadService {
         const errorMessage = err?.error?.error || 'Failed to create lead';
         this.error.set(errorMessage);
         this.loading.set(false);
-        console.error('Error creating lead:', err);
       },
     });
   }
@@ -65,7 +63,6 @@ export class LeadService {
         const errorMessage = err?.error?.error || 'Failed to update lead';
         this.error.set(errorMessage);
         this.loading.set(false);
-        console.error('Error updating lead:', err);
       },
     });
   }
@@ -83,7 +80,6 @@ export class LeadService {
         const errorMessage = err?.error?.error || 'Failed to delete lead';
         this.error.set(errorMessage);
         this.loading.set(false);
-        console.error('Error deleting lead:', err);
       },
     });
   }

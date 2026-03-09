@@ -96,4 +96,3 @@ export class DocumentsComponent implements OnInit {
     return icons[type] ?? '📄';
   }
 }
-

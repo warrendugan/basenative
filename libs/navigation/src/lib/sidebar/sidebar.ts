@@ -3,16 +3,14 @@ import {
   input,
   output,
   ViewEncapsulation,
-  computed,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarItem } from './sidebar.models';
 
 @Component({
   selector: 'nav[bn-sidebar]',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.css'],
   encapsulation: ViewEncapsulation.None,

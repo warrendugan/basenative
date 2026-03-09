@@ -120,8 +120,6 @@ export class LeadFormComponent {
     this.submitted.set(true);
 
     if (this.form.valid) {
-      const formData = this.form.value;
-      console.log('Form submitted:', formData);
       // TODO: Send to API
       this.router.navigate(['/leads']);
     }

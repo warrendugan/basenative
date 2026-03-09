@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation, input } from '@angular/core';
 
 @Component({
   selector: 'div[toolbar], section[toolbar]',
+  standalone: true,
   host: {
     role: 'toolbar',
     '[attr.aria-orientation]': 'orientation()',

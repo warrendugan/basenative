@@ -56,7 +56,7 @@ describe('WelcomeComponent', () => {
   it('should have accessible links in features grid', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     const links = compiled.querySelectorAll('.card');
-    expect(links.length).toBe(6);
+    expect(links.length).toBe(8);
 
     const docsLink = Array.from(links).find((l) =>
       l.getAttribute('href')?.includes('/docs'),
