@@ -1,0 +1,212 @@
+:host {
+  display: block;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Page Header */
+hgroup {
+  margin-bottom: var(--space-8);
+}
+
+hgroup > h1 {
+  font-size: 2rem;
+  color: var(--color-text-main);
+  margin: 0 0 var(--space-4) 0;
+}
+
+hgroup > p {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Summary Cards Grid */
+section:has(dl) {
+  display: contents;
+}
+
+section:has(dl) dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+section:has(dl) article {
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+  cursor: pointer;
+}
+
+[data-theme='dark'] section:has(dl) article {
+  background-color: var(--color-surface-base);
+  border-color: var(--color-border-default);
+}
+
+section:has(dl) article:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
+}
+
+section:has(dl) figure {
+  font-size: 2.5rem;
+  line-height: 1;
+  min-width: 3rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+section:has(dl) figcaption {
+  font-size: inherit;
+}
+
+section:has(dl) > dl > article > div {
+  flex: 1;
+}
+
+section:has(dl) dt {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-4) 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+section:has(dl) dd {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0;
+}
+
+/* Recent Activity Section */
+section:last-of-type {
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme='dark'] section:last-of-type {
+  background-color: var(--color-surface-base);
+  border-color: var(--color-border-default);
+}
+
+section:last-of-type > h2 {
+  font-size: 1.25rem;
+  color: var(--color-text-main);
+  margin: 0 0 var(--space-6) 0;
+}
+
+section:last-of-type > article {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-base);
+  border: 1px solid var(--color-border-default);
+  transition: var(--transition-normal);
+  margin-bottom: var(--space-4);
+}
+
+section:last-of-type > article:last-of-type {
+  margin-bottom: 0;
+}
+
+[data-theme='dark'] section:last-of-type > article {
+  background-color: var(--color-surface-base);
+  border-color: var(--color-border-default);
+}
+
+section:last-of-type > article:hover {
+  background-color: var(--color-border-default);
+}
+
+[data-theme='dark'] section:last-of-type > article:hover {
+  background-color: var(--color-border-default);
+}
+
+section:last-of-type > article::before {
+  content: attr(data-type);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+section:last-of-type > article[data-type='lead']::before {
+  background-color: var(--color-accent);
+  color: white;
+}
+
+section:last-of-type > article[data-type='estimate']::before {
+  background-color: #f59e0b;
+  color: white;
+}
+
+section:last-of-type > article[data-type='invoice']::before {
+  background-color: #8b5cf6;
+  color: white;
+}
+
+section:last-of-type > article[data-type='team']::before {
+  background-color: #3b82f6;
+  color: white;
+}
+
+section:last-of-type > article > div {
+  flex: 1;
+}
+
+section:last-of-type p {
+  color: var(--color-text-main);
+  font-weight: 500;
+  margin: 0 0 var(--space-4) 0;
+}
+
+section:last-of-type time {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  display: block;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  section:has(dl) dl {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  section:has(dl) dl {
+    grid-template-columns: 1fr;
+  }
+
+  hgroup > h1 {
+    font-size: 1.5rem;
+  }
+}

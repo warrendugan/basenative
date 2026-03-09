@@ -1,4 +1,3 @@
-import { ToolbarWidget } from '@angular/aria/toolbar';
 import { Component, signal } from '@angular/core';
 import {
     ButtonComponent,
@@ -30,8 +29,8 @@ interface Window {
 
 @Component({
   selector: 'section[editor-page]',
-
-  imports: [FeatureLayoutComponent, ButtonComponent, IconComponent, ToolbarComponent, ToolbarWidget],
+  standalone: true,
+  imports: [FeatureLayoutComponent, ButtonComponent, IconComponent, ToolbarComponent],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
 })
@@ -47,6 +46,7 @@ export class EditorComponent {
       const text = await file.text();
       this.content.set(text);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
     }
   }

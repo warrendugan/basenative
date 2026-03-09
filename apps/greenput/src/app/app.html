@@ -1,0 +1,109 @@
+<aside [attr.data-open]="isNavOpen()">
+  <!-- Close button for mobile -->
+  <header>
+    <button
+      aria-label="{{ page.navCloseLabel }}"
+      (click)="closeNav()"
+    >
+      ✕
+    </button>
+  </header>
+
+  <!-- Logo -->
+  <hgroup>
+    <figure logo [size]="32"></figure>
+    <h1>Greenput</h1>
+  </hgroup>
+
+  <!-- Navigation Links -->
+  <nav role="navigation" aria-label="Main navigation">
+    <!-- Core -->
+    <menu [attr.data-section]="'core'">
+      <h3>{{ page.nav.core.label }}</h3>
+      @for (item of page.nav.core.items; track item.route) {
+        <li>
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            (click)="closeNav()"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    </menu>
+
+    <!-- M&A -->
+    <menu [attr.data-section]="'ma'">
+      <h3>{{ page.nav.ma.label }}</h3>
+      @for (item of page.nav.ma.items; track item.route) {
+        <li>
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            (click)="closeNav()"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    </menu>
+
+    <!-- Treasury -->
+    <menu [attr.data-section]="'treasury'">
+      <h3>{{ page.nav.treasury.label }}</h3>
+      @for (item of page.nav.treasury.items; track item.route) {
+        <li>
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            (click)="closeNav()"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    </menu>
+
+    <!-- Settings -->
+    <menu [attr.data-section]="'settings'">
+      @for (item of page.nav.settings.items; track item.route) {
+        <li>
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            (click)="closeNav()"
+          >
+            {{ item.label }}
+          </a>
+        </li>
+      }
+    </menu>
+  </nav>
+</aside>
+
+<!-- Main Content Area -->
+<div>
+  <!-- Top Bar -->
+  <header role="banner">
+    <div>
+      <button
+        aria-label="{{ page.navToggleLabel }}"
+        (click)="toggleNav()"
+      >
+        ☰
+      </button>
+      <h2>{{ page.appTitle }}</h2>
+    </div>
+
+    <!-- Theme Selector -->
+    <output>
+      <menu theme-selector></menu>
+    </output>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <router-outlet />
+  </main>
+</div>

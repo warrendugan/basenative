@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { ThemeService } from '@basenative/tokens';
+import { signal } from '@angular/core';
 import { GreenputShowcaseComponent } from './greenput-showcase.component';
 
 describe('GreenputShowcaseComponent', () => {
@@ -9,8 +12,21 @@ describe('GreenputShowcaseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GreenputShowcaseComponent, RouterTestingModule, FormsModule],
-      providers: [],
+      imports: [GreenputShowcaseComponent, FormsModule],
+      providers: [
+        provideRouter([]),
+        provideHttpClient(),
+        {
+          provide: ThemeService,
+          useValue: {
+            mode: signal('system'),
+            isDark: signal(false),
+            lowPowerMode: signal(false),
+            setMode: jest.fn(),
+            toggleMode: jest.fn(),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GreenputShowcaseComponent);

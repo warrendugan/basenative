@@ -1,0 +1,42 @@
+<nav [class.collapsed]="collapsed()">
+  <ul class="sidebar-menu">
+    @for (item of items(); track item.route) {
+      <li class="menu-item">
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          (click)="itemSelected.emit(item)"
+          class="menu-link"
+        >
+          <span class="icon">{{ item.icon }}</span>
+          @if (!collapsed()) {
+            <span class="label">{{ item.label }}</span>
+            @if (item.badge) {
+              <span class="badge">{{ item.badge }}</span>
+            }
+          }
+        </a>
+
+        @if (item.children && item.children.length > 0 && !collapsed()) {
+          <ul class="submenu">
+            @for (child of item.children; track child.route) {
+              <li class="submenu-item">
+                <a
+                  [routerLink]="child.route"
+                  routerLinkActive="active"
+                  (click)="itemSelected.emit(child)"
+                  class="submenu-link"
+                >
+                  {{ child.label }}
+                  @if (child.badge) {
+                    <span class="badge">{{ child.badge }}</span>
+                  }
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </li>
+    }
+  </ul>
+</nav>

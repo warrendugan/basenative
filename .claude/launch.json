@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "showcase",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "serve", "showcase"],
+      "port": 4200
+    },
+    {
+      "name": "greenput",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "serve", "greenput"],
+      "port": 4300
+    },
+    {
+      "name": "duganlabs",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "serve", "duganlabs"],
+      "port": 4600
+    },
+    {
+      "name": "greenput-api",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "serve", "greenput-api"],
+      "port": 8787
+    },
+    {
+      "name": "api-gateway",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "serve", "api-gateway"],
+      "port": 3000
+    }
+  ]
+}

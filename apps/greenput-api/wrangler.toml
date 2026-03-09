@@ -1,14 +1,53 @@
 name = "greenput-api"
-main = "../../dist/apps/greenput-api/index.js"
-compatibility_date = "2024-01-01"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+route = "api.duganlabs.com/*"
 
+# GreenPut API serves all consolidated entities:
+# - Leads (CRM)
+# - Deals (M&A from Pending Business)
+# - Documents (M&A from Pending Business)
+# - Treasury Accounts & Sweep Config (from YieldPay)
+
+# ----- D1 Database -----
 [[d1_databases]]
 binding = "DB"
 database_name = "greenput-prod-db"
-database_id = "env_var_will_override_this"
+database_id = "56e32427-2991-40ac-b9a5-185c119866f4"
+migrations_dir = "migrations"
 
-# Local dev fallback
+# ----- KV Namespace (session tokens) -----
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "bd581f8f43214a1f96463bcaf13b4f82"
+
+# ----- Environment Variables -----
+[vars]
+JWT_SECRET = "CHANGE_ME_IN_DASHBOARD"
+
+# ----- Dev Environment -----
 [env.dev]
-d1_databases = [
-  { binding = "DB", database_name = "greenput-dev-db", database_id = "XXXX" }
-]
+name = "greenput-api-dev"
+
+[[env.dev.d1_databases]]
+binding = "DB"
+database_name = "greenput-prod-db"
+database_id = "56e32427-2991-40ac-b9a5-185c119866f4"
+
+[[env.dev.kv_namespaces]]
+binding = "SESSIONS"
+id = "bd581f8f43214a1f96463bcaf13b4f82"
+
+# ----- Production Environment -----
+[env.production]
+name = "greenput-api-prod"
+route = "api.duganlabs.com/*"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "greenput-prod-db"
+database_id = "56e32427-2991-40ac-b9a5-185c119866f4"
+
+[[env.production.kv_namespaces]]
+binding = "SESSIONS"
+id = "bd581f8f43214a1f96463bcaf13b4f82"

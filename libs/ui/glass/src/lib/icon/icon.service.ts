@@ -37,6 +37,8 @@ export class IconService {
   }
 
   preload(names: string[]) {
-    names.forEach((name) => this.getIcon(name).subscribe());
+    names.forEach((name) => {
+      void this.getIcon(name).subscribe();
+    });
   }
 }

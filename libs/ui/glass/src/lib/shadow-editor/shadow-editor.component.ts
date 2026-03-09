@@ -75,7 +75,8 @@ export class ShadowEditorComponent {
   }
 
   onInput(type: 'x' | 'y' | 'blur' | 'spread' | 'opacity', event: Event) {
-    const val = parseFloat((event.target as HTMLInputElement).value);
+    const target = event.target as HTMLInputElement;
+    const val = parseFloat(target.value);
     switch (type) {
       case 'x':
         this.x.set(val);
@@ -97,7 +98,8 @@ export class ShadowEditorComponent {
   }
 
   onColorInput(event: Event) {
-    this.color.set((event.target as HTMLInputElement).value);
+    const target = event.target as HTMLInputElement;
+    this.color.set(target.value);
     this.update();
   }
 }

@@ -1,0 +1,90 @@
+<hgroup>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.subtitle }}</p>
+</hgroup>
+
+<section data-role="board">
+  @for (stage of stages; track stage) {
+    <section [attr.data-stage]="stage">
+      <header>
+        <h3>{{ stage }}</h3>
+        <output>{{ getDealsInStage(stage).length }}</output>
+      </header>
+
+      <ol>
+        @for (deal of getDealsInStage(stage); track deal.id) {
+          <li>
+            <article
+              [attr.aria-expanded]="expandedDealId() === deal.id"
+              (click)="toggleExpandDeal(deal.id)"
+              (keydown.enter)="toggleExpandDeal(deal.id)"
+              (keydown.space)="toggleExpandDeal(deal.id); $event.preventDefault()"
+              tabindex="0"
+              role="button"
+            >
+              <dl>
+                <dt>{{ deal.companyName }}</dt>
+                <dd>${{ (deal.dealValue / 1000000).toFixed(1) }}M</dd>
+
+                <dt>Assignee</dt>
+                <dd>{{ deal.assignee }}</dd>
+
+                <dt>{{ page.labels.targetClose }}</dt>
+                <dd>{{ deal.targetClose }}</dd>
+              </dl>
+
+              @if (expandedDealId() === deal.id) {
+                <section>
+                  <details>
+                    <summary>{{ page.labels.lastActivity }}</summary>
+                    <p>{{ deal.lastActivity }}</p>
+                  </details>
+
+                  <details>
+                    <summary>{{ page.labels.notes }}</summary>
+                    <ul>
+                      @for (note of deal.notes; track $index) {
+                        <li>{{ note }}</li>
+                      }
+                    </ul>
+                  </details>
+
+                  <menu>
+                    @if (stage !== 'Closed Won' && stage !== 'Closed Lost') {
+                      <button
+                        (click)="advanceDeal(deal.id, stage); $event.stopPropagation()"
+                      >
+                        {{ page.actions.nextStage }}
+                      </button>
+                    }
+                    <button
+                      (click)="showNoteInput(deal.id); $event.stopPropagation()"
+                    >
+                      {{ page.actions.addNote }}
+                    </button>
+                  </menu>
+
+                  @if (activeNoteInput() === deal.id) {
+                    <form (submit)="addNote(deal.id); $event.preventDefault()">
+                      <fieldset>
+                        <input
+                          type="text"
+                          [placeholder]="page.labels.notePlaceholder"
+                          [value]="noteText()"
+                          (input)="onNoteInput($event)"
+                        />
+                        <button type="submit">
+                          {{ page.actions.saveNote }}
+                        </button>
+                      </fieldset>
+                    </form>
+                  }
+                </section>
+              }
+            </article>
+          </li>
+        }
+      </ol>
+    </section>
+  }
+</section>

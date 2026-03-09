@@ -1,0 +1,86 @@
+{
+  "name": "duganlabs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "dl",
+  "sourceRoot": "apps/duganlabs/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/duganlabs",
+        "browser": "apps/duganlabs/src/main.ts",
+        "tsConfig": "apps/duganlabs/tsconfig.app.json",
+        "prerender": false,
+        "ssr": false,
+        "polyfills": ["zone.js"],
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/duganlabs/src/assets",
+            "output": "assets"
+          }
+        ],
+        "styles": ["apps/duganlabs/src/styles.css"]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "10kb",
+              "maximumError": "20kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/duganlabs/src/environments/environment.ts",
+              "with": "apps/duganlabs/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "duganlabs:build:production"
+        },
+        "development": {
+          "buildTarget": "duganlabs:build:development"
+        }
+      },
+      "defaultConfiguration": "development",
+      "options": {
+        "port": 4600
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/duganlabs/jest.config.cts",
+        "tsConfig": "apps/duganlabs/tsconfig.spec.json"
+      }
+    }
+  }
+}

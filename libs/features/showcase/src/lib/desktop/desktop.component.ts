@@ -25,6 +25,7 @@ export class DesktopComponent {
       const text = await navigator.clipboard.readText();
       this.pastedContent.set(text);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Failed to read clipboard', err);
     }
   }

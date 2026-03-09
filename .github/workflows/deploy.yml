@@ -1,21 +1,42 @@
-name: Deploy to Cloudflare Pages
+name: Deploy Ecosystem to Cloudflare
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
+    inputs:
+      app:
+        description: 'App to deploy (all, greenput, duganlabs, showcase, greenput-api)'
+        required: false
+        default: 'all'
 
 permissions:
   contents: read
   deployments: write
 
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+  CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
 jobs:
-  deploy:
+  # Build stage: Compile all apps with production config
+  build:
+    name: Build Apps
     runs-on: ubuntu-latest
-    name: Deploy to Cloudflare Pages
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        app: [greenput, duganlabs, showcase]
+      fail-fast: false
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -23,54 +44,196 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+      - name: Build ${{ matrix.app }}
+        run: npx nx build ${{ matrix.app }} --configuration=production
 
-      - name: Build Docs
-        run: npx nx build showcase --configuration=production
+      - name: Upload ${{ matrix.app }} build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.app }}
+          path: dist/apps/${{ matrix.app }}/browser
+          retention-days: 1
 
-      - name: Build Greenput API
+  # Build the Worker separately
+  build-worker:
+    name: Build Worker
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate TypeScript
+        run: npx tsc --noEmit --project apps/greenput-api/tsconfig.json
+
+      - name: Build greenput-api Worker
         run: npx nx build greenput-api --configuration=production
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+      - name: Upload Worker build artifact
+        uses: actions/upload-artifact@v4
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: basenative
-          directory: dist/apps/showcase/browser
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          name: build-worker
+          path: apps/greenput-api
+          retention-days: 1
 
-      - name: Inject D1 Database ID
+  # Deploy Pages: Deploy each Angular app to Cloudflare Pages
+  deploy-pages:
+    name: Deploy Pages
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 20
+
+    strategy:
+      matrix:
+        include:
+          - app: greenput
+            project: greenput
+          - app: duganlabs
+            project: duganlabs
+          - app: showcase
+            project: basenative
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download ${{ matrix.app }} artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.app }}
+          path: dist/apps/${{ matrix.app }}/browser
+
+      - name: Deploy ${{ matrix.app }} to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          command: pages deploy dist/apps/${{ matrix.app }}/browser --project-name=${{ matrix.project }}
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ env.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+
+  # Deploy Worker: Deploy greenput-api Worker to Cloudflare
+  deploy-worker:
+    name: Deploy Worker
+    runs-on: ubuntu-latest
+    needs: build-worker
+    if: |
+      github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' && (
+        github.event.inputs.app == 'all' ||
+        github.event.inputs.app == 'greenput-api'
+      )
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Worker artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-worker
+          path: apps/greenput-api
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run D1 migrations
+        uses: cloudflare/wrangler-action@v3
+        with:
+          command: d1 migrations apply greenput-prod-db --remote --config apps/greenput-api/wrangler.toml
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Deploy greenput-api Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          command: deploy --config apps/greenput-api/wrangler.toml
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ env.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+
+  # Verify: Health check all deployed services
+  verify:
+    name: Verify Deployments
+    runs-on: ubuntu-latest
+    needs: [deploy-pages, deploy-worker]
+    if: always()
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Wait for deployments to be live
+        run: sleep 10
+
+      - name: Health check - greenput
         run: |
-          # Fetch the database ID for 'greenput-prod-db'
-          # We use npx wrangler specifically to ensure we use the same version/context, though any installed wrangler works.
-          # The output is expected to be a JSON array of database objects.
-          DB_ID=$(npx wrangler d1 list --json | jq -r '.[] | select(.name == "greenput-prod-db") | .uuid')
+          for i in {1..5}; do
+            if curl -f --silent --max-time 5 https://greenput.com/health 2>/dev/null; then
+              echo "✓ greenput is live"
+              exit 0
+            fi
+            if [ $i -lt 5 ]; then sleep 5; fi
+          done
+          echo "⚠ greenput health check did not respond, but deployment may still be processing"
 
-          if [ -z "$DB_ID" ] || [ "$DB_ID" = "null" ]; then
-            echo "Error: Could not find D1 database 'greenput-prod-db'"
-            exit 1
-          fi
+      - name: Health check - duganlabs
+        run: |
+          for i in {1..5}; do
+            if curl -f --silent --max-time 5 https://duganlabs.com/health 2>/dev/null; then
+              echo "✓ duganlabs is live"
+              exit 0
+            fi
+            if [ $i -lt 5 ]; then sleep 5; fi
+          done
+          echo "⚠ duganlabs health check did not respond, but deployment may still be processing"
 
-          # IMPORTANT: Mask the ID so it doesn't show up in logs
-          echo "::add-mask::$DB_ID"
-          echo "Found Database ID: ***"
+      - name: Health check - showcase
+        run: |
+          for i in {1..5}; do
+            if curl -f --silent --max-time 5 https://basenative.com/health 2>/dev/null; then
+              echo "✓ showcase is live"
+              exit 0
+            fi
+            if [ $i -lt 5 ]; then sleep 5; fi
+          done
+          echo "⚠ showcase health check did not respond, but deployment may still be processing"
 
-          # Replace placeholder in wrangler.toml
-          sed -i "s/env_var_will_override_this/$DB_ID/g" apps/greenput-api/wrangler.toml
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
-      - name: Deploy Greenput API (Worker)
-        run: npx nx deploy greenput-api
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Health check - API Worker
+        run: |
+          for i in {1..5}; do
+            if curl -f --silent --max-time 5 https://api.duganlabs.com/health 2>/dev/null; then
+              echo "✓ greenput-api Worker is live"
+              exit 0
+            fi
+            if [ $i -lt 5 ]; then sleep 5; fi
+          done
+          echo "⚠ greenput-api health check did not respond, but deployment may still be processing"

@@ -47,3 +47,5 @@ Thumbs.db
 apps/showcase/public/manifest.webmanifest
 apps/showcase/public/icons/
 infra/terraform.tfvars
+
+.nx/polygraph

@@ -1,20 +1,31 @@
 @layer tokens {
   :root {
-    /* Light Mode (Default) */
-    --color-primary: oklch(60% 0.22 260);
-    --color-surface-base: oklch(98% 0 0);
-    --color-surface-glass: oklch(98% 0 0 / 0.6);
-    --color-surface-glass-dampered: oklch(95% 0 0 / 0.5);
-    --color-surface-panel: oklch(96% 0 0 / 0.7);
-    --color-text-main: oklch(10% 0 0);
-    --color-text-1: oklch(10% 0 0);
-    --color-text-muted: oklch(40% 0 0);
-    --color-border-glass: oklch(0% 0 0 / 0.1);
-    --color-error: oklch(60% 0.2 25);
-
-    --color-pattern-dots: oklch(40% 0 0 / 0.2); /* Darker dots for light mode */
-
-    /* Syntax Highlighting */
+    --color-primary: oklch(65% 0.22 260);
+    --color-primary-hover: oklch(58% 0.22 260);
+    --color-accent: oklch(72% 0.19 155);
+    --color-accent-hover: oklch(65% 0.19 155);
+    --color-surface-base: oklch(15% 0.02 260);
+    --color-surface-raised: oklch(20% 0.02 260);
+    --color-surface-glass: oklch(15% 0.02 260 / 0.6);
+    --color-surface-panel: oklch(20% 0.03 260 / 0.7);
+    --color-surface-overlay: oklch(0% 0 0 / 0.5);
+    --color-text-main: oklch(98% 0 0);
+    --color-text-muted: oklch(70% 0.05 260);
+    --color-text-inverse: oklch(15% 0.02 260);
+    --color-border-default: oklch(30% 0.03 260);
+    --color-border-glass: oklch(100% 0 0 / 0.1);
+    --color-border-focus: oklch(65% 0.22 260);
+    --color-status-success: oklch(72% 0.19 155);
+    --color-status-success-subtle: oklch(72% 0.19 155 / 0.15);
+    --color-status-warning: oklch(80% 0.18 85);
+    --color-status-warning-subtle: oklch(80% 0.18 85 / 0.15);
+    --color-status-error: oklch(63% 0.26 25);
+    --color-status-error-subtle: oklch(63% 0.26 25 / 0.15);
+    --color-status-info: oklch(65% 0.22 260);
+    --color-status-info-subtle: oklch(65% 0.22 260 / 0.15);
+    --color-status-neutral: oklch(55% 0.03 260);
+    --color-status-neutral-subtle: oklch(55% 0.03 260 / 0.15);
+    --color-pattern-dots: oklch(85% 0.02 260 / 0.2);
     --color-syntax-bg: #1e1e1e;
     --color-syntax-text: #d4d4d4;
     --color-syntax-comment: #6a9955;
@@ -27,11 +38,23 @@
     --color-syntax-class: #4ec9b0;
     --color-syntax-operator: #d4d4d4;
     --color-syntax-brace: #ffd700;
-
+    --color-stage-prospect: oklch(65% 0.22 260);
+    --color-stage-loi: oklch(72% 0.15 290);
+    --color-stage-diligence: oklch(80% 0.18 85);
+    --color-stage-negotiation: oklch(75% 0.16 50);
+    --color-stage-won: oklch(72% 0.19 155);
+    --color-stage-lost: oklch(63% 0.26 25);
+    --color-account-operating: oklch(65% 0.22 260);
+    --color-account-reserve: oklch(72% 0.15 290);
+    --color-account-investment: oklch(72% 0.19 155);
+    --color-account-payroll: oklch(75% 0.16 50);
     --blur-glass-sm: 12px;
     --blur-glass-md: 24px;
-    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-
+    --shadow-sm: 0 1px 2px 0 oklch(0% 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px oklch(0% 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px oklch(0% 0 0 / 0.1);
+    --shadow-glass: 0 8px 32px 0 oklch(0% 0 0 / 0.3);
+    --space-0: 0px;
     --space-1: 4px;
     --space-2: 8px;
     --space-3: 12px;
@@ -41,30 +64,72 @@
     --space-8: 32px;
     --space-10: 40px;
     --space-12: 48px;
-
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
+    --space-px: 1px;
+    --space-0_5: 2px;
+    --space-1_5: 6px;
+    --space-2_5: 10px;
+    --radius-none: 0px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
     --radius-full: 9999px;
-  }
-
-  :root.dark {
-    /* Dark Mode Overrides */
-    --color-primary: oklch(65% 0.22 260);
-    --color-surface-base: oklch(15% 0.02 260);
-    --color-surface-glass: oklch(15% 0.02 260 / 0.6);
-    --color-surface-glass-dampered: oklch(20% 0.02 260 / 0.5);
-    --color-surface-panel: oklch(20% 0.03 260 / 0.7);
-    --color-text-main: oklch(98% 0 0);
-    --color-text-1: oklch(98% 0 0);
-    --color-text-muted: oklch(70% 0.05 260);
-    --color-border-glass: oklch(100% 0 0 / 0.1);
-
-    --color-pattern-dots: oklch(
-      85% 0.02 260 / 0.2
-    ); /* Light dots for dark mode */
-
-    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --size-sidebar: 240px;
+    --size-topbar: 60px;
+    --size-icon-sm: 16px;
+    --size-icon-md: 24px;
+    --size-icon-lg: 32px;
+    --size-toggle-width: 44px;
+    --size-toggle-height: 24px;
+    --size-toggle-thumb: 18px;
+    --z-index-hide: -1;
+    --z-index-auto: auto;
+    --z-index-base: 0;
+    --z-index-docked: 10;
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1100;
+    --z-index-banner: 1200;
+    --z-index-overlay: 1300;
+    --z-index-modal: 1400;
+    --z-index-popover: 1500;
+    --z-index-toast: 1600;
+    --z-index-tooltip: 1700;
+    --typography-font-sans: Inter, system-ui, sans-serif;
+    --typography-font-mono: JetBrains Mono, monospace;
+    --typography-size-xs: 0.75rem;
+    --typography-size-sm: 0.875rem;
+    --typography-size-base: 1rem;
+    --typography-size-lg: 1.125rem;
+    --typography-size-xl: 1.25rem;
+    --typography-size-2xl: 1.5rem;
+    --typography-size-3xl: 2rem;
+    --typography-size-4xl: 2.5rem;
+    --typography-line-height-tight: 1.2;
+    --typography-line-height-normal: 1.5;
+    --typography-line-height-relaxed: 1.75;
+    --typography-weight-thin: 100;
+    --typography-weight-extralight: 200;
+    --typography-weight-light: 300;
+    --typography-weight-normal: 400;
+    --typography-weight-medium: 500;
+    --typography-weight-semibold: 600;
+    --typography-weight-bold: 700;
+    --typography-weight-extrabold: 800;
+    --typography-weight-black: 900;
+    --typography-letter-spacing-tight: -0.025em;
+    --typography-letter-spacing-normal: 0em;
+    --typography-letter-spacing-wide: 0.025em;
+    --typography-letter-spacing-caps: 0.05em;
+    --transition-fast: 150ms ease;
+    --transition-normal: 200ms ease;
+    --transition-slow: 300ms ease;
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+    --breakpoint-xl: 1280px;
   }
 }

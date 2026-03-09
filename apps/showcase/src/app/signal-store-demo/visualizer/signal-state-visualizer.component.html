@@ -1,11 +1,7 @@
-<div class="visualizer-container glass-panel">
-  <div class="visualizer-header">
-    <span class="title">Signal Store State</span>
-    <span class="badge">Live</span>
-  </div>
-  <div class="visualizer-content">
-    <pre
-      class="code-block"
-    ><code class="language-json" [innerHTML]="highlightedState()"></code></pre>
-  </div>
-</div>
+<section data-type="visualizer">
+  <header>
+    <output>Signal Store State</output>
+    <mark data-status="live">Live</mark>
+  </header>
+  <pre><code class="language-json" [innerHTML]="highlightedState()"></code></pre>
+</section>

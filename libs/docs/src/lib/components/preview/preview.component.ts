@@ -5,7 +5,6 @@ import {
   ChangeDetectionStrategy,
   ViewEncapsulation,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import {
   ButtonComponent,
@@ -33,7 +32,6 @@ import { ScrollDirective } from '@basenative/primitives-scroll';
   selector: 'docs-preview',
   standalone: true,
   imports: [
-    CommonModule,
     ButtonComponent,
     IconComponent,
     LogoComponent,

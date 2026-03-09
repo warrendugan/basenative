@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
   selector: 'article[strategy-page]',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './strategy.html',
   styleUrl: './strategy.css',
 })

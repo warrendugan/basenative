@@ -5,7 +5,6 @@ import {
   computed,
   ViewEncapsulation,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, map, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +22,7 @@ interface Article {
 @Component({
   selector: 'article[philosophies-page]',
   standalone: true,
-  imports: [CommonModule, IconComponent],
+  imports: [IconComponent],
   templateUrl: './philosophies.html',
   styleUrl: './philosophies.css',
   encapsulation: ViewEncapsulation.None,

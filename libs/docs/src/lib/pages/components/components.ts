@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import {
   Component,
@@ -55,7 +54,7 @@ import { PreviewComponent } from '../../components/preview/preview.component';
 @Component({
   selector: 'docs-components',
   standalone: true,
-  imports: [CommonModule, IconComponent, PreviewComponent],
+  imports: [IconComponent, PreviewComponent],
   templateUrl: './components.html',
   styleUrl: './components.css',
   encapsulation: ViewEncapsulation.None,

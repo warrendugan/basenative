@@ -1,0 +1,15 @@
+{
+  "name": "tools-pact",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/pact",
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "options": {
+        "jestConfig": "tools/pact/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  }
+}

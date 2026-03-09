@@ -1,0 +1,721 @@
+openapi: 3.1.0
+info:
+  title: Greenput API
+  description: |
+    API for the Greenput CRM system - a platform for managing leads
+    and transactions in the electrician labor abstraction ecosystem.
+
+    Authentication: Bearer JWT token required for all endpoints except health check.
+  version: 1.0.0
+  contact:
+    name: Greenput API Support
+    url: https://greenput.example.com/support
+  license:
+    name: Proprietary
+    url: https://greenput.example.com/license
+
+servers:
+  - url: https://api.greenput.example.com
+    description: Production API
+  - url: http://localhost:8787
+    description: Local development (wrangler dev)
+  - url: http://localhost:8787/api
+    description: Local development with /api prefix
+
+security:
+  - bearerAuth: []
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # Domain Models
+    Lead:
+      type: object
+      description: A lead record in the Greenput CRM system
+      required:
+        - id
+        - tenant_id
+        - name
+        - email
+        - phone
+        - status
+        - source
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the lead
+          example: lead-001
+        tenant_id:
+          type: string
+          description: ID of the tenant this lead belongs to
+          example: acme-corp
+        name:
+          type: string
+          description: Full name of the lead contact
+          example: John Martinez
+        email:
+          type: string
+          format: email
+          description: Email address of the lead
+          example: john.martinez@email.com
+        phone:
+          type: string
+          description: Phone number of the lead
+          example: '+1-555-0100'
+        status:
+          type: string
+          enum: [new, qualified, contacted, converted, lost]
+          description: Current status of the lead in the pipeline
+          example: new
+        source:
+          type: string
+          enum: [referral, web, phone, instagram, facebook]
+          description: Source channel where the lead originated
+          example: referral
+        created_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the lead was created
+          example: '2024-02-28T14:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp of the last update
+          example: '2024-02-28T14:30:00Z'
+
+    LeadPayload:
+      type: object
+      description: Payload for creating a new lead
+      required:
+        - tenant_id
+        - name
+        - email
+        - phone
+        - source
+      properties:
+        tenant_id:
+          type: string
+          example: acme-corp
+        name:
+          type: string
+          example: John Martinez
+        email:
+          type: string
+          format: email
+          example: john.martinez@email.com
+        phone:
+          type: string
+          example: '+1-555-0100'
+        source:
+          type: string
+          enum: [referral, web, phone, instagram, facebook]
+          example: referral
+
+    LeadPatch:
+      type: object
+      description: Payload for updating a lead (all fields optional)
+      properties:
+        name:
+          type: string
+          example: John Martinez
+        email:
+          type: string
+          format: email
+          example: john.martinez@email.com
+        phone:
+          type: string
+          example: '+1-555-0100'
+        status:
+          type: string
+          enum: [new, qualified, contacted, converted, lost]
+          example: qualified
+
+    ConsentReceipt:
+      type: object
+      description: Record of user consent for data processing
+      required:
+        - id
+        - lead_id
+        - type
+        - timestamp
+        - data
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the receipt
+          example: receipt-001
+        lead_id:
+          type: string
+          description: ID of the lead this receipt is for
+          example: lead-001
+        type:
+          type: string
+          enum: [consent, revocation]
+          description: Type of consent record
+          example: consent
+        timestamp:
+          type: string
+          format: date-time
+          description: When the consent was recorded
+          example: '2024-02-28T14:30:00Z'
+        data:
+          type: object
+          description: Consent details
+          properties:
+            consent_type:
+              type: string
+              enum: [email_marketing, sms_marketing, phone_calls, analytics]
+              example: email_marketing
+            opted_in:
+              type: boolean
+              example: true
+            version:
+              type: string
+              description: Version of the consent form
+              example: '1.0'
+
+    RevocationRequest:
+      type: object
+      description: Request to revoke a consent record
+      required:
+        - consent_id
+      properties:
+        consent_id:
+          type: string
+          description: ID of the consent record to revoke
+          example: receipt-001
+
+    User:
+      type: object
+      description: Authenticated user information
+      required:
+        - id
+        - email
+        - name
+        - tenant_id
+        - role
+      properties:
+        id:
+          type: string
+          example: user-001
+        email:
+          type: string
+          format: email
+          example: admin@acme-corp.com
+        name:
+          type: string
+          example: Alice Adams
+        tenant_id:
+          type: string
+          example: acme-corp
+        role:
+          type: string
+          enum: [admin, manager, operator, viewer]
+          example: admin
+
+    TenantContext:
+      type: object
+      description: Multi-tenant context information extracted from JWT
+      required:
+        - tenant_id
+        - user_id
+      properties:
+        tenant_id:
+          type: string
+          description: ID of the tenant
+          example: acme-corp
+        user_id:
+          type: string
+          description: ID of the authenticated user
+          example: user-001
+
+    Error:
+      type: object
+      description: Standard error response
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: Lead not found
+        code:
+          type: string
+          description: Machine-readable error code
+          example: LEAD_NOT_FOUND
+        details:
+          type: object
+          description: Additional error context
+          example: { id: 'lead-999' }
+
+    ListResponse:
+      type: object
+      description: Paginated list response
+      required:
+        - data
+        - total
+        - limit
+        - offset
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lead'
+        total:
+          type: integer
+          description: Total number of items matching the query
+          example: 50
+        limit:
+          type: integer
+          description: Maximum items returned per page
+          example: 10
+        offset:
+          type: integer
+          description: Number of items skipped
+          example: 0
+
+    AuthResponse:
+      type: object
+      description: Authentication response with JWT token
+      required:
+        - token
+        - user
+      properties:
+        token:
+          type: string
+          description: Bearer JWT token for API requests
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        user:
+          $ref: '#/components/schemas/User'
+
+    HealthResponse:
+      type: object
+      description: Health check response
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded, down]
+          example: ok
+        timestamp:
+          type: string
+          format: date-time
+          description: Server timestamp of the health check
+          example: '2024-02-28T14:30:00Z'
+
+  parameters:
+    TenantIdQuery:
+      name: tenant_id
+      in: query
+      description: Filter by tenant ID
+      required: false
+      schema:
+        type: string
+        example: acme-corp
+
+    StatusQuery:
+      name: status
+      in: query
+      description: Filter by lead status
+      required: false
+      schema:
+        type: string
+        enum: [new, qualified, contacted, converted, lost]
+
+    LimitQuery:
+      name: limit
+      in: query
+      description: Maximum number of items to return (pagination)
+      required: false
+      schema:
+        type: integer
+        default: 10
+        minimum: 1
+        maximum: 100
+
+    OffsetQuery:
+      name: offset
+      in: query
+      description: Number of items to skip (pagination)
+      required: false
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+
+    LeadIdPath:
+      name: id
+      in: path
+      description: Lead unique identifier
+      required: true
+      schema:
+        type: string
+
+    UserIdPath:
+      name: userId
+      in: path
+      description: User unique identifier
+      required: true
+      schema:
+        type: string
+
+    ReceiptIdPath:
+      name: id
+      in: path
+      description: Receipt unique identifier
+      required: true
+      schema:
+        type: string
+
+paths:
+  /health:
+    get:
+      summary: Health Check Endpoint
+      description: |
+        Check if the API is running and healthy.
+        No authentication required.
+      operationId: getHealth
+      security: []
+      tags:
+        - System
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /leads:
+    get:
+      summary: List Leads
+      description: |
+        Retrieve a paginated list of leads for the authenticated tenant.
+        Query parameters allow filtering by status and tenant.
+      operationId: listLeads
+      tags:
+        - Leads
+      parameters:
+        - $ref: '#/components/parameters/TenantIdQuery'
+        - $ref: '#/components/parameters/StatusQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/OffsetQuery'
+      responses:
+        '200':
+          description: List of leads
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponse'
+        '401':
+          description: Unauthorized - invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Create Lead
+      description: |
+        Create a new lead in the system.
+        The lead is automatically assigned to the authenticated user's tenant.
+      operationId: createLead
+      tags:
+        - Leads
+      requestBody:
+        description: Lead creation payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadPayload'
+      responses:
+        '201':
+          description: Lead created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          description: Bad request - invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /leads/{id}:
+    get:
+      summary: Get Lead by ID
+      description: Retrieve a single lead by its unique identifier.
+      operationId: getLead
+      tags:
+        - Leads
+      parameters:
+        - $ref: '#/components/parameters/LeadIdPath'
+      responses:
+        '200':
+          description: Lead found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Lead not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Update Lead
+      description: |
+        Update one or more fields of an existing lead.
+        Only provided fields are updated; omitted fields are unchanged.
+      operationId: updateLead
+      tags:
+        - Leads
+      parameters:
+        - $ref: '#/components/parameters/LeadIdPath'
+      requestBody:
+        description: Lead update payload (all fields optional)
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadPatch'
+      responses:
+        '200':
+          description: Lead updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Lead not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /receipts/{id}:
+    get:
+      summary: Get Consent Receipt
+      description: Retrieve a specific consent receipt record by ID.
+      operationId: getReceipt
+      tags:
+        - Receipts
+      parameters:
+        - $ref: '#/components/parameters/ReceiptIdPath'
+      responses:
+        '200':
+          description: Receipt found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentReceipt'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Receipt not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /revoke:
+    post:
+      summary: Revoke Consent
+      description: |
+        Revoke a previously recorded consent.
+        This creates a revocation record while preserving audit history.
+      operationId: revokeConsent
+      tags:
+        - Receipts
+      requestBody:
+        description: Revocation request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevocationRequest'
+      responses:
+        '200':
+          description: Consent revoked successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  revoked_id:
+                    type: string
+                  revoked_at:
+                    type: string
+                    format: date-time
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /calendar/{userId}/feed.ics:
+    get:
+      summary: Get iCalendar Feed
+      description: |
+        Retrieve an iCalendar (.ics) feed for a user's events.
+        Can be imported into calendar applications (Google Calendar, Outlook, etc).
+      operationId: getCalendarFeed
+      tags:
+        - Calendar
+      parameters:
+        - $ref: '#/components/parameters/UserIdPath'
+      responses:
+        '200':
+          description: iCalendar feed
+          content:
+            text/calendar:
+              schema:
+                type: string
+                example: |
+                  BEGIN:VCALENDAR
+                  VERSION:2.0
+                  PRODID:-//Greenput//Calendar//EN
+                  BEGIN:VEVENT
+                  SUMMARY:Lead Follow-up
+                  END:VEVENT
+                  END:VCALENDAR
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/login:
+    post:
+      summary: Login / Authenticate
+      description: |
+        Authenticate with email and password to obtain a JWT bearer token.
+        Include the token in the Authorization header for subsequent requests.
+      operationId: login
+      security: []
+      tags:
+        - Authentication
+      requestBody:
+        description: Login credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@acme-corp.com
+                password:
+                  type: string
+                  format: password
+                  example: password123
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/auth/me:
+    get:
+      summary: Get Current User
+      description: |
+        Retrieve information about the authenticated user.
+        Requires valid JWT bearer token in Authorization header.
+      operationId: getCurrentUser
+      tags:
+        - Authentication
+      responses:
+        '200':
+          description: Current user information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized - invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

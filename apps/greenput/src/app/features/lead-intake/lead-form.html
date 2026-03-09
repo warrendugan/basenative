@@ -1,0 +1,211 @@
+<hgroup>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.subtitle }}</p>
+</hgroup>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset>
+    <legend>{{ page.sections.contact }}</legend>
+
+    <div data-grid="2">
+      <div>
+        <label for="firstName">
+          {{ page.fields.firstName.label }}
+          <span aria-label="required">*</span>
+        </label>
+        <input
+          id="firstName"
+          type="text"
+          formControlName="firstName"
+          [attr.aria-invalid]="isFieldInvalid('firstName')"
+          [placeholder]="page.fields.firstName.placeholder"
+          required
+        />
+        @if (isFieldInvalid('firstName')) {
+          <output>{{ getFieldError('firstName') }}</output>
+        }
+      </div>
+
+      <div>
+        <label for="lastName">
+          {{ page.fields.lastName.label }}
+          <span aria-label="required">*</span>
+        </label>
+        <input
+          id="lastName"
+          type="text"
+          formControlName="lastName"
+          [attr.aria-invalid]="isFieldInvalid('lastName')"
+          [placeholder]="page.fields.lastName.placeholder"
+          required
+        />
+        @if (isFieldInvalid('lastName')) {
+          <output>{{ getFieldError('lastName') }}</output>
+        }
+      </div>
+    </div>
+
+    <div data-grid="2">
+      <div>
+        <label for="phone">
+          {{ page.fields.phone.label }}
+          <span aria-label="required">*</span>
+        </label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          [attr.aria-invalid]="isFieldInvalid('phone')"
+          [placeholder]="page.fields.phone.placeholder"
+          required
+        />
+        @if (isFieldInvalid('phone')) {
+          <output>{{ getFieldError('phone') }}</output>
+        }
+      </div>
+
+      <div>
+        <label for="email">
+          {{ page.fields.email.label }}
+          <span aria-label="required">*</span>
+        </label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          [attr.aria-invalid]="isFieldInvalid('email')"
+          [placeholder]="page.fields.email.placeholder"
+          required
+        />
+        @if (isFieldInvalid('email')) {
+          <output>{{ getFieldError('email') }}</output>
+        }
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ page.sections.address }}</legend>
+
+    <div>
+      <label for="address">
+        {{ page.fields.address.label }}
+        <span aria-label="required">*</span>
+      </label>
+      <input
+        id="address"
+        type="text"
+        formControlName="address"
+        [attr.aria-invalid]="isFieldInvalid('address')"
+        [placeholder]="page.fields.address.placeholder"
+        required
+      />
+      @if (isFieldInvalid('address')) {
+        <output>{{ getFieldError('address') }}</output>
+      }
+    </div>
+
+    <div data-grid="3">
+      <div>
+        <label for="city">
+          {{ page.fields.city.label }}
+          <span aria-label="required">*</span>
+        </label>
+        <input
+          id="city"
+          type="text"
+          formControlName="city"
+          [attr.aria-invalid]="isFieldInvalid('city')"
+          [placeholder]="page.fields.city.placeholder"
+          required
+        />
+        @if (isFieldInvalid('city')) {
+          <output>{{ getFieldError('city') }}</output>
+        }
+      </div>
+
+      <div>
+        <label for="state">
+          {{ page.fields.state.label }}
+          <span aria-label="required">*</span>
+        </label>
+        <select
+          id="state"
+          formControlName="state"
+          [attr.aria-invalid]="isFieldInvalid('state')"
+          required
+        >
+          <option value="" disabled>{{ page.fields.state.placeholder }}</option>
+          @for (state of states; track state) {
+            <option [value]="state">{{ state }}</option>
+          }
+        </select>
+        @if (isFieldInvalid('state')) {
+          <output>{{ getFieldError('state') }}</output>
+        }
+      </div>
+
+      <div>
+        <label for="zip">
+          {{ page.fields.zip.label }}
+          <span aria-label="required">*</span>
+        </label>
+        <input
+          id="zip"
+          type="text"
+          formControlName="zip"
+          [attr.aria-invalid]="isFieldInvalid('zip')"
+          [placeholder]="page.fields.zip.placeholder"
+          required
+        />
+        @if (isFieldInvalid('zip')) {
+          <output>{{ getFieldError('zip') }}</output>
+        }
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{ page.sections.service }}</legend>
+
+    <div>
+      <label for="serviceType">
+        {{ page.fields.serviceType.label }}
+        <span aria-label="required">*</span>
+      </label>
+      <select
+        id="serviceType"
+        formControlName="serviceType"
+        [attr.aria-invalid]="isFieldInvalid('serviceType')"
+        required
+      >
+        <option value="" disabled>{{ page.fields.serviceType.placeholder }}</option>
+        @for (service of serviceTypes; track service.value) {
+          <option [value]="service.value">{{ service.label }}</option>
+        }
+      </select>
+      @if (isFieldInvalid('serviceType')) {
+        <output>{{ getFieldError('serviceType') }}</output>
+      }
+    </div>
+
+    <div>
+      <label for="notes">{{ page.fields.notes.label }}</label>
+      <textarea
+        id="notes"
+        formControlName="notes"
+        [attr.aria-invalid]="isFieldInvalid('notes')"
+        [placeholder]="page.fields.notes.placeholder"
+        rows="4"
+      ></textarea>
+      @if (isFieldInvalid('notes')) {
+        <output>{{ getFieldError('notes') }}</output>
+      }
+    </div>
+  </fieldset>
+
+  <menu>
+    <button type="button" (click)="onCancel()">{{ page.actions.cancel }}</button>
+    <button type="submit">{{ page.actions.submit }}</button>
+  </menu>
+</form>
