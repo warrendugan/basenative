@@ -1,0 +1,61 @@
+<hgroup>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.subtitle }}</p>
+</hgroup>
+
+<section data-role="accounts">
+  <h2>{{ page.sections.active }}</h2>
+  <p data-role="account-count">{{ treasuryService.accounts().length }} Accounts</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>{{ page.columns.name }}</th>
+        <th>{{ page.columns.type }}</th>
+        <th>{{ page.columns.balance }}</th>
+        <th>{{ page.columns.yield }}</th>
+        <th>{{ page.columns.institution }}</th>
+        <th>{{ page.columns.status }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (account of treasuryService.accounts(); track account.id) {
+        <tr [attr.data-status]="account.status.toLowerCase()">
+          <td>{{ account.name }}</td>
+          <td><mark [attr.data-type]="account.type.toLowerCase()">{{ account.type }}</mark></td>
+          <td><data>{{ formatCurrency(account.balance) }}</data></td>
+          <td>{{ (account.yield | number: '1.2-2') }}%</td>
+          <td>{{ account.institution }}</td>
+          <td><output [attr.data-status]="account.status.toLowerCase()">{{ account.status }}</output></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</section>
+
+<section data-role="details">
+  @for (account of treasuryService.accounts(); track account.id) {
+    <article [attr.data-account-id]="account.id">
+      <header>
+        <h3>{{ account.name }}</h3>
+        <mark [attr.data-type]="account.type.toLowerCase()">{{ account.type }}</mark>
+      </header>
+      <dl>
+        <dt>{{ page.columns.balance }}</dt>
+        <dd>{{ formatCurrency(account.balance) }}</dd>
+
+        <dt>{{ page.columns.yield }}</dt>
+        <dd>{{ (account.yield | number: '1.2-2') }}%</dd>
+
+        <dt>{{ page.columns.institution }}</dt>
+        <dd>{{ account.institution }}</dd>
+
+        <dt>{{ page.columns.lastSwept }}</dt>
+        <dd>{{ formatDate(account.lastSwept) }}</dd>
+
+        <dt>{{ page.columns.status }}</dt>
+        <dd><output [attr.data-status]="account.status.toLowerCase()">{{ account.status }}</output></dd>
+      </dl>
+    </article>
+  }
+</section>

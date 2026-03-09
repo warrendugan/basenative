@@ -24,6 +24,9 @@
       "@basenative/docs": ["libs/docs/src/index.ts"],
       "@basenative/ui-glass": ["libs/ui/glass/src/index.ts"],
       "@basenative/features/showcase": ["libs/features/showcase/src/index.ts"],
+      "@basenative/util-auth": ["libs/shared/util-auth/src/index.ts"],
+      "@basenative/util-signals": ["libs/shared/util-signals/src/index.ts"],
+      "@basenative/util-tenant": ["libs/shared/util-tenant/src/index.ts"],
       "@greenput/domain": ["libs/greenput/domain/src/index.ts"],
       "@greenput/ui": ["libs/greenput/ui/src/index.ts"]
     }

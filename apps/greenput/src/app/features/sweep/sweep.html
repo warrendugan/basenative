@@ -1,0 +1,66 @@
+<hgroup>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.subtitle }}</p>
+</hgroup>
+
+<section data-role="rules">
+  @for (rule of treasuryService.sweepRules(); track rule.id) {
+    <article [attr.data-enabled]="rule.enabled">
+      <header>
+        <hgroup>
+          <h2>{{ rule.name }}</h2>
+          <mark [attr.data-frequency]="rule.frequency.toLowerCase()">{{ rule.frequency }}</mark>
+        </hgroup>
+        <label>
+          <input type="checkbox" [checked]="rule.enabled" (change)="treasuryService.toggleSweepRule(rule.id)" />
+        </label>
+      </header>
+
+      <dl>
+        <dt>{{ page.labels.source }}</dt>
+        <dd>
+          <data>{{ rule.sourceAccount }}</data>
+          <p>{{ page.labels.sourceLabel }}</p>
+        </dd>
+
+        <dt>{{ page.labels.target }}</dt>
+        <dd>
+          <data>{{ rule.targetAccount }}</data>
+          <p>{{ page.labels.targetLabel }}</p>
+        </dd>
+
+        <dt>{{ page.labels.threshold }}</dt>
+        <dd>
+          <output>{{ formatCurrency(rule.threshold) }}</output>
+          <p>{{ page.labels.thresholdDesc }}</p>
+        </dd>
+
+        <dt>{{ page.labels.lastRun }}</dt>
+        <dd>
+          <data>{{ formatDate(rule.lastRun) }}</data>
+          <p [attr.data-status]="isRecent(rule.lastRun) ? 'recent' : ''">{{ getRunStatus(rule.lastRun) }}</p>
+        </dd>
+      </dl>
+
+      <footer>
+        <output [attr.data-state]="rule.enabled ? 'enabled' : 'disabled'">
+          {{ rule.enabled ? 'Enabled' : 'Disabled' }}
+        </output>
+        <figcaption>{{ page.labels.ruleId }}: {{ rule.id }}</figcaption>
+      </footer>
+    </article>
+  }
+</section>
+
+<section data-role="summary">
+  <dl>
+    <dt>{{ page.stats.total }}</dt>
+    <dd>{{ treasuryService.sweepRules().length }}</dd>
+
+    <dt>{{ page.stats.enabled }}</dt>
+    <dd>{{ treasuryService.activeSweepCount() }}</dd>
+
+    <dt>{{ page.stats.disabled }}</dt>
+    <dd>{{ treasuryService.sweepRules().length - treasuryService.activeSweepCount() }}</dd>
+  </dl>
+</section>

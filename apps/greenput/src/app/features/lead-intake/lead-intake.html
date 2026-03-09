@@ -1,0 +1,49 @@
+<hgroup>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.subtitle }}</p>
+</hgroup>
+
+<nav>
+  <a routerLink="/leads/new" role="button">{{ page.actions.newLead }}</a>
+</nav>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">{{ page.columns.name }}</th>
+      <th scope="col">{{ page.columns.email }}</th>
+      <th scope="col">{{ page.columns.phone }}</th>
+      <th scope="col">{{ page.columns.service }}</th>
+      <th scope="col">{{ page.columns.status }}</th>
+      <th scope="col">{{ page.columns.created }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (lead of leads(); track lead.id) {
+      <tr [attr.data-lead-id]="lead.id">
+        <td>
+          <strong>{{ lead.firstName }} {{ lead.lastName }}</strong>
+        </td>
+        <td>
+          <a [href]="'mailto:' + lead.email">{{ lead.email }}</a>
+        </td>
+        <td>
+          <a [href]="'tel:' + lead.phone">{{ lead.phone }}</a>
+        </td>
+        <td>
+          <mark [attr.data-service]="lead.serviceType">{{ lead.serviceType }}</mark>
+        </td>
+        <td>
+          <output [attr.data-status]="lead.status">{{ lead.status }}</output>
+        </td>
+        <td>{{ lead.createdAt | date : 'short' }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (leads().length === 0) {
+  <figure>
+    <figcaption>No leads found. Create a new lead to get started.</figcaption>
+  </figure>
+}

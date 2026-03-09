@@ -1,0 +1,174 @@
+{
+  "version": "1.0.0",
+  "projectName": "Labor Abstraction Ecosystem",
+  "description": "Multi-tenant Nx monorepo with Angular 21 apps and Cloudflare Workers",
+  "lastUpdated": "2026-03-08",
+  "stories": [
+    {
+      "id": "LAE-001",
+      "title": "BaseNative showcase app deployment",
+      "status": "pending",
+      "description": "Deploy the BaseNative showcase application as a standalone Angular 21 app to Cloudflare Pages",
+      "acceptance": [
+        "App builds without errors",
+        "App deploys to Cloudflare Pages successfully",
+        "Production URL is accessible and responsive",
+        "Follows Nx monorepo conventions for build output"
+      ],
+      "verificationCommand": "npm run build:basenative && npm run test:basenative",
+      "priority": "high",
+      "labels": ["deployment", "angular", "showcase"]
+    },
+    {
+      "id": "LAE-002",
+      "title": "Greenput CRM lead management flow",
+      "status": "pending",
+      "description": "Implement complete lead management flow in Greenput CRM app with list, create, edit, and delete operations",
+      "acceptance": [
+        "Lead list displays all leads with pagination",
+        "Create lead form validates required fields",
+        "Edit existing lead updates database",
+        "Delete lead removes from list",
+        "All signals properly reactive",
+        "Uses inject() for dependencies",
+        "Standalone components only"
+      ],
+      "verificationCommand": "npm run test:greenput -- --include='**/lead*.spec.ts'",
+      "priority": "high",
+      "labels": ["crm", "leads", "angular"]
+    },
+    {
+      "id": "LAE-003",
+      "title": "Greenput deal tracking",
+      "status": "pending",
+      "description": "Create deal tracking module in Greenput app with status pipeline and notes",
+      "acceptance": [
+        "Deal list view with status indicators",
+        "Status pipeline workflow (prospect -> negotiation -> won/lost)",
+        "Add and edit deal notes",
+        "Filter deals by status",
+        "Responsive design on mobile"
+      ],
+      "verificationCommand": "npm run test:greenput -- --include='**/deal*.spec.ts'",
+      "priority": "high",
+      "labels": ["deals", "pipeline", "crm"]
+    },
+    {
+      "id": "LAE-004",
+      "title": "Greenput treasury and sweep functionality",
+      "status": "pending",
+      "description": "Build treasury dashboard showing account balances, transaction history, and fund allocation",
+      "acceptance": [
+        "Dashboard loads account summary data",
+        "Transaction history displays with filtering",
+        "Fund allocation visualization renders",
+        "Real-time balance updates via signals",
+        "Performance: initial load < 2s"
+      ],
+      "verificationCommand": "npm run test:greenput -- --include='**/treasury*.spec.ts'",
+      "priority": "high",
+      "labels": ["dashboard", "treasury", "fintech"]
+    },
+    {
+      "id": "LAE-005",
+      "title": "API Worker endpoints — CRUD for leads",
+      "status": "pending",
+      "description": "Implement Cloudflare Workers API endpoints for lead CRUD operations with D1 persistence",
+      "acceptance": [
+        "GET /api/leads returns all leads",
+        "GET /api/leads/:id returns single lead",
+        "POST /api/leads creates new lead",
+        "PUT /api/leads/:id updates lead",
+        "DELETE /api/leads/:id removes lead",
+        "All endpoints validate input",
+        "Proper HTTP status codes",
+        "CORS headers configured"
+      ],
+      "verificationCommand": "npm run test:api -- --include='**/leads*.test.ts'",
+      "priority": "high",
+      "labels": ["api", "workers", "crud"]
+    },
+    {
+      "id": "LAE-006",
+      "title": "API Worker endpoints — consent receipts",
+      "status": "pending",
+      "description": "Implement consent receipt storage and retrieval via Workers API endpoints",
+      "acceptance": [
+        "POST /api/consent-receipts stores receipt",
+        "GET /api/consent-receipts/:id retrieves receipt",
+        "Receipts include timestamp, user_id, consent_type",
+        "Query by user_id and date range supported",
+        "Audit trail maintained"
+      ],
+      "verificationCommand": "npm run test:api -- --include='**/consent*.test.ts'",
+      "priority": "medium",
+      "labels": ["api", "workers", "compliance"]
+    },
+    {
+      "id": "LAE-007",
+      "title": "Authentication flow — JWT tokens",
+      "status": "pending",
+      "description": "Implement JWT-based authentication with login, token refresh, and protected routes",
+      "acceptance": [
+        "Login endpoint returns JWT token",
+        "Token includes user_id and tenant_id claims",
+        "Refresh endpoint extends token validity",
+        "Protected routes verify token",
+        "Token expiration handled gracefully",
+        "Middleware validates signatures"
+      ],
+      "verificationCommand": "npm run test:api -- --include='**/auth*.test.ts'",
+      "priority": "high",
+      "labels": ["auth", "jwt", "security"]
+    },
+    {
+      "id": "LAE-008",
+      "title": "Pact contract tests passing",
+      "status": "pending",
+      "description": "Establish and maintain Pact contract tests between Angular apps and Workers APIs",
+      "acceptance": [
+        "Pact files exist for all API contracts",
+        "Pact provider tests pass",
+        "Pact consumer tests pass",
+        "Contract versioning documented",
+        "CI/CD pipeline validates contracts"
+      ],
+      "verificationCommand": "npm run test:pact",
+      "priority": "medium",
+      "labels": ["testing", "contracts", "api"]
+    },
+    {
+      "id": "LAE-009",
+      "title": "MSW mock handlers matching OpenAPI spec",
+      "status": "pending",
+      "description": "Create Mock Service Worker (MSW) handlers that align with OpenAPI specification",
+      "acceptance": [
+        "MSW handlers cover all OpenAPI endpoints",
+        "Response shapes match schema definitions",
+        "Status code ranges implemented",
+        "Error scenarios mocked",
+        "Integration with test suite",
+        "Documentation updated"
+      ],
+      "verificationCommand": "npm run test -- --include='**/*.spec.ts' -- --coverage",
+      "priority": "medium",
+      "labels": ["testing", "mocking", "api"]
+    },
+    {
+      "id": "LAE-010",
+      "title": "Multi-tenant data isolation",
+      "status": "pending",
+      "description": "Implement data isolation at database and application layers for multi-tenant support",
+      "acceptance": [
+        "D1 queries include tenant_id filter",
+        "KV namespace segregation by tenant",
+        "Application middleware enforces tenant context",
+        "No cross-tenant data leakage",
+        "Tenant ID required in all requests"
+      ],
+      "verificationCommand": "npm run test:integration -- --include='**/tenant*.spec.ts'",
+      "priority": "high",
+      "labels": ["multi-tenant", "security", "data"]
+    }
+  ]
+}

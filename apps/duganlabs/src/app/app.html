@@ -1,0 +1,35 @@
+<header>
+  <hgroup>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.tagline }}</p>
+  </hgroup>
+</header>
+
+<main>
+  <section>
+    @for (entity of page.entities; track entity.name) {
+      <article [attr.data-type]="entity.badgeType">
+        <header>
+          <h2>{{ entity.name }}</h2>
+          <mark [attr.data-type]="entity.badgeType">{{ entity.badge }}</mark>
+        </header>
+        <p>{{ entity.description }}</p>
+        <menu>
+          @for (tag of entity.highlights; track tag) {
+            <li>{{ tag }}</li>
+          }
+        </menu>
+        <a [href]="entity.link">{{ entity.linkLabel }} →</a>
+      </article>
+    }
+  </section>
+</main>
+
+<footer>
+  <p>{{ page.footer.copyright }}</p>
+  <nav>
+    @for (link of page.footer.links; track link.label) {
+      <a [href]="link.href">{{ link.label }}</a>
+    }
+  </nav>
+</footer>

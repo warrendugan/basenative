@@ -1,19 +1,17 @@
-/* Offline Banner */
-.offline-banner {
+output[data-status="offline"] {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 9999;
-  background: rgba(255, 59, 48, 0.8); /* System Red */
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: white;
+  z-index: var(--z-index-toast);
+  background: var(--color-status-error);
+  backdrop-filter: blur(var(--blur-glass-sm));
+  color: var(--color-text-main);
   text-align: center;
   padding: var(--space-2);
-  font-weight: 600;
-  font-size: 0.9rem;
-  animation: slide-down 0.3s ease-out;
+  font-weight: var(--typography-weight-semibold);
+  font-size: var(--typography-size-sm);
+  animation: slide-down var(--transition-slow) ease-out;
 }
 
 @keyframes slide-down {

@@ -1,0 +1,71 @@
+<hgroup>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.subtitle }}</p>
+</hgroup>
+
+<form data-role="filters">
+  <label>
+    {{ page.filters.typeLabel }}
+    <select (change)="selectedType.set(($event.target as HTMLSelectElement).value)">
+      <option value="">{{ page.filters.allTypes }}</option>
+      @for (type of page.types; track type) {
+        <option [value]="type">{{ type }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    {{ page.filters.statusLabel }}
+    <select (change)="selectedStatus.set(($event.target as HTMLSelectElement).value)">
+      <option value="">{{ page.filters.allStatuses }}</option>
+      @for (status of page.statuses; track status) {
+        <option [value]="status">{{ status }}</option>
+      }
+    </select>
+  </label>
+
+  <output>
+    {{ filteredDocuments().length }} document{{ filteredDocuments().length !== 1 ? 's' : '' }}
+  </output>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th scope="col">{{ page.columns.name }}</th>
+      <th scope="col">{{ page.columns.type }}</th>
+      <th scope="col">{{ page.columns.status }}</th>
+      <th scope="col">{{ page.columns.uploadedBy }}</th>
+      <th scope="col">{{ page.columns.date }}</th>
+      <th scope="col">{{ page.columns.size }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (doc of filteredDocuments(); track doc.id) {
+      <tr [attr.data-status]="doc.status">
+        <td>
+          <span data-icon>{{ getDocIcon(doc.type) }}</span>
+          <span>{{ doc.name }}</span>
+        </td>
+        <td>
+          <mark [attr.data-type]="doc.type">{{ doc.type }}</mark>
+        </td>
+        <td>
+          <output [attr.data-status]="doc.status">{{ doc.status }}</output>
+        </td>
+        <td>{{ doc.uploadedBy }}</td>
+        <td>{{ doc.uploadedAt }}</td>
+        <td>{{ doc.size }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+@if (filteredDocuments().length === 0) {
+  <figure>
+    <figcaption>
+      <h2>{{ page.empty.title }}</h2>
+      <p>{{ page.empty.message }}</p>
+    </figcaption>
+  </figure>
+}

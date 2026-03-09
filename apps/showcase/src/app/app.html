@@ -1,6 +1,6 @@
 @if (isOffline()) {
-  <div class="offline-banner">
-    You are currently offline. Some features may be disabled.
-  </div>
+  <output data-status="offline" role="alert">
+    {{ page.offlineBanner }}
+  </output>
 }
 <router-outlet />

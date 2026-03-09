@@ -6,6 +6,14 @@
     "start": "nx serve showcase",
     "build": "nx build showcase",
     "test": "nx test showcase",
+    "build:greenput": "npx nx build greenput --configuration=production",
+    "build:duganlabs": "npx nx build duganlabs --configuration=production",
+    "build:showcase": "npx nx build showcase --configuration=production",
+    "build:all": "npx nx run-many --target=build --configuration=production --projects=greenput,duganlabs,showcase",
+    "build:worker": "npx nx build greenput-api --configuration=production",
+    "deploy:worker": "wrangler deploy --config apps/greenput-api/wrangler.toml",
+    "test:all": "npx nx run-many --target=test --all",
+    "lint:all": "npx nx run-many --target=lint --all",
     "infra:init": "cd infra && terraform init",
     "infra:plan": "cd infra && terraform plan",
     "infra:apply": "cd infra && terraform apply"
@@ -22,6 +30,7 @@
     "@angular/router": "~21.0.0",
     "@angular/ssr": "21.0.4",
     "@types/prismjs": "1.26.5",
+    "ics": "^3.8.1",
     "prismjs": "1.30.0",
     "rxjs": "~7.8.0",
     "zone.js": "0.15.1"

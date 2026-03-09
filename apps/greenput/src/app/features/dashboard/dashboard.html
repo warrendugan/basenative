@@ -1,0 +1,33 @@
+<!-- Page Header -->
+<hgroup>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.subtitle }}</p>
+</hgroup>
+
+<!-- Summary Cards Grid -->
+<section>
+  <dl>
+    @for (card of summaryCards(); track card.label) {
+      <article>
+        <figure>
+          <figcaption>{{ card.icon }}</figcaption>
+        </figure>
+        <div>
+          <dt>{{ card.label }}</dt>
+          <dd>{{ card.value }}</dd>
+        </div>
+      </article>
+    }
+  </dl>
+</section>
+
+<!-- Recent Activity Section -->
+<section>
+  <h2>{{ page.activity.title }}</h2>
+  @for (activity of recentActivity(); track activity.id) {
+    <article [data-type]="activity.type">
+      <p>{{ activity.description }}</p>
+      <time>{{ activity.timestamp }}</time>
+    </article>
+  }
+</section>
