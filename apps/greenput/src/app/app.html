@@ -1,4 +1,4 @@
-<aside [data-open]="isNavOpen()">
+<aside [attr.data-open]="isNavOpen()">
   <!-- Close button for mobile -->
   <header>
     <button
@@ -11,14 +11,14 @@
 
   <!-- Logo -->
   <hgroup>
-    <bn-logo [theme]="'light'"></bn-logo>
+    <figure logo [size]="32"></figure>
     <h1>Greenput</h1>
   </hgroup>
 
   <!-- Navigation Links -->
   <nav role="navigation" aria-label="Main navigation">
     <!-- Core -->
-    <menu [data-section]="'core'">
+    <menu [attr.data-section]="'core'">
       <h3>{{ page.nav.core.label }}</h3>
       @for (item of page.nav.core.items; track item.route) {
         <li>
@@ -34,7 +34,7 @@
     </menu>
 
     <!-- M&A -->
-    <menu [data-section]="'ma'">
+    <menu [attr.data-section]="'ma'">
       <h3>{{ page.nav.ma.label }}</h3>
       @for (item of page.nav.ma.items; track item.route) {
         <li>
@@ -50,7 +50,7 @@
     </menu>
 
     <!-- Treasury -->
-    <menu [data-section]="'treasury'">
+    <menu [attr.data-section]="'treasury'">
       <h3>{{ page.nav.treasury.label }}</h3>
       @for (item of page.nav.treasury.items; track item.route) {
         <li>
@@ -66,7 +66,7 @@
     </menu>
 
     <!-- Settings -->
-    <menu [data-section]="'settings'">
+    <menu [attr.data-section]="'settings'">
       @for (item of page.nav.settings.items; track item.route) {
         <li>
           <a
@@ -98,7 +98,7 @@
 
     <!-- Theme Selector -->
     <output>
-      <bn-theme-selector></bn-theme-selector>
+      <menu theme-selector></menu>
     </output>
   </header>
 

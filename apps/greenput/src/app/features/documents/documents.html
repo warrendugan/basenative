@@ -6,7 +6,7 @@
 <form data-role="filters">
   <label>
     {{ page.filters.typeLabel }}
-    <select (change)="selectedType.set(($event.target as HTMLSelectElement).value)">
+    <select (change)="onTypeChange($event)">
       <option value="">{{ page.filters.allTypes }}</option>
       @for (type of page.types; track type) {
         <option [value]="type">{{ type }}</option>
@@ -16,7 +16,7 @@
 
   <label>
     {{ page.filters.statusLabel }}
-    <select (change)="selectedStatus.set(($event.target as HTMLSelectElement).value)">
+    <select (change)="onStatusChange($event)">
       <option value="">{{ page.filters.allStatuses }}</option>
       @for (status of page.statuses; track status) {
         <option [value]="status">{{ status }}</option>
@@ -54,7 +54,7 @@
           <output [attr.data-status]="doc.status">{{ doc.status }}</output>
         </td>
         <td>{{ doc.uploadedBy }}</td>
-        <td>{{ doc.uploadedAt }}</td>
+        <td>{{ doc.createdAt }}</td>
         <td>{{ doc.size }}</td>
       </tr>
     }

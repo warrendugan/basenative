@@ -1,6 +1,6 @@
 <section feature-layout title="File Editor">
   <div toolbar class="toolbar">
-    <button (click)="openFile()" bn variant="primary" ngToolbarWidget value="open">
+    <button (click)="openFile()" bn variant="primary">
       <span icon name="file-text" [size]="20"></span>
       Open File
     </button>
@@ -9,8 +9,6 @@
       [disabled]="!fileHandle"
       bn
       variant="secondary"
-      ngToolbarWidget
-      value="save"
     >
       <span icon name="save" [size]="20"></span>
       Save File

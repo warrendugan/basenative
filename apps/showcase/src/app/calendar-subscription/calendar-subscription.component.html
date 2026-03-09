@@ -1,0 +1,17 @@
+<section>
+  <h2>Calendar Subscription</h2>
+  <fieldset>
+    <label>Feed URL</label>
+    <output>{{ feedUrl() }}</output>
+  </fieldset>
+  <menu>
+    <a [href]="webcalUrl()">Open in Calendar</a>
+    <button (click)="copyLink()">
+      @if (copied()) {
+        Copied!
+      } @else {
+        Copy Link
+      }
+    </button>
+  </menu>
+</section>

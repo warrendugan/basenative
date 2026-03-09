@@ -17,6 +17,10 @@
             <article
               [attr.aria-expanded]="expandedDealId() === deal.id"
               (click)="toggleExpandDeal(deal.id)"
+              (keydown.enter)="toggleExpandDeal(deal.id)"
+              (keydown.space)="toggleExpandDeal(deal.id); $event.preventDefault()"
+              tabindex="0"
+              role="button"
             >
               <dl>
                 <dt>{{ deal.companyName }}</dt>
@@ -67,7 +71,7 @@
                           type="text"
                           [placeholder]="page.labels.notePlaceholder"
                           [value]="noteText()"
-                          (input)="noteText.set(($event.target as HTMLInputElement).value)"
+                          (input)="onNoteInput($event)"
                         />
                         <button type="submit">
                           {{ page.actions.saveNote }}

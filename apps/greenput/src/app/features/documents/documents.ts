@@ -76,6 +76,14 @@ export class DocumentsComponent implements OnInit {
     return filtered;
   });
 
+  onTypeChange(event: Event): void {
+    this.selectedType.set((event.target as HTMLSelectElement).value);
+  }
+
+  onStatusChange(event: Event): void {
+    this.selectedStatus.set((event.target as HTMLSelectElement).value);
+  }
+
   getDocIcon(type: string): string {
     const icons: Record<string, string> = {
       'LOI': '📝',

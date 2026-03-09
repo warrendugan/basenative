@@ -1,4 +1,3 @@
-import { ToolbarWidget } from '@angular/aria/toolbar';
 import { Component, signal } from '@angular/core';
 import {
     ButtonComponent,
@@ -31,7 +30,7 @@ interface Window {
 @Component({
   selector: 'section[editor-page]',
   standalone: true,
-  imports: [FeatureLayoutComponent, ButtonComponent, IconComponent, ToolbarComponent, ToolbarWidget],
+  imports: [FeatureLayoutComponent, ButtonComponent, IconComponent, ToolbarComponent],
   templateUrl: './editor.component.html',
   styleUrl: './editor.component.css',
 })

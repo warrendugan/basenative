@@ -71,6 +71,10 @@ export class DealsComponent implements OnInit {
     }
   }
 
+  onNoteInput(event: Event): void {
+    this.noteText.set((event.target as HTMLInputElement).value);
+  }
+
   advanceDeal(dealId: string, currentStage: DealStage): void {
     const stageIndex = this.stages.indexOf(currentStage);
     if (stageIndex < this.stages.length - 1) {

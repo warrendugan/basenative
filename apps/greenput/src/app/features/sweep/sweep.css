@@ -64,7 +64,7 @@ article header h2 {
 }
 
 article header mark {
-  padding: var(--space-1) var(--space-2.5);
+  padding: var(--space-1) var(--space-2_5);
   border-radius: var(--radius-sm);
   font-size: var(--typography-size-xs);
   font-weight: var(--typography-weight-semibold);
@@ -190,7 +190,7 @@ footer {
 }
 
 footer output {
-  padding: var(--space-1) var(--space-2.5);
+  padding: var(--space-1) var(--space-2_5);
   border-radius: var(--radius-sm);
   font-weight: var(--typography-weight-semibold);
   text-transform: uppercase;

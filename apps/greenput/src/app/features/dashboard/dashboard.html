@@ -25,7 +25,7 @@
 <section>
   <h2>{{ page.activity.title }}</h2>
   @for (activity of recentActivity(); track activity.id) {
-    <article [data-type]="activity.type">
+    <article [attr.data-type]="activity.type">
       <p>{{ activity.description }}</p>
       <time>{{ activity.timestamp }}</time>
     </article>
