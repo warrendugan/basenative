@@ -32,7 +32,6 @@ import { ScrollDirective } from '@basenative/primitives-scroll';
   selector: 'docs-preview',
   standalone: true,
   imports: [
-    CommonModule,
     ButtonComponent,
     IconComponent,
     LogoComponent,
