@@ -1,0 +1,38 @@
+<section>
+  <header>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.subtitle }}</p>
+  </header>
+
+  <form (ngSubmit)="signIn()">
+    <fieldset [disabled]="loading()">
+      <label for="email">{{ page.emailLabel }}</label>
+      <input
+        id="email"
+        type="email"
+        [placeholder]="page.emailPlaceholder"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        name="email"
+        autocomplete="username webauthn"
+        required
+      />
+
+      @if (error()) {
+        <output role="alert">{{ error() }}</output>
+      }
+
+      <button type="submit">
+        @if (loading()) {
+          <span>Authenticating...</span>
+        } @else {
+          {{ page.signInButton }}
+        }
+      </button>
+    </fieldset>
+  </form>
+
+  <nav>
+    <p>{{ page.noAccount }} <a routerLink="/register">{{ page.registerLink }}</a></p>
+  </nav>
+</section>

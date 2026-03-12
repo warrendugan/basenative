@@ -1,0 +1,9 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "declaration": true,
+    "outDir": "../../../dist/libs/identity/domain"
+  },
+  "include": ["src/**/*.ts"]
+}
