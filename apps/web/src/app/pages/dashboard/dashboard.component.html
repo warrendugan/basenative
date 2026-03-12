@@ -1,0 +1,80 @@
+<section>
+  <header>
+    <hgroup>
+      <h1>{{ page.title }}</h1>
+      <p>{{ page.subtitle }}</p>
+    </hgroup>
+    <button type="button" (click)="logout()">{{ page.logoutButton }}</button>
+  </header>
+
+  @if (currentUser(); as user) {
+    <article>
+      <h2>{{ page.claimsHeading }}</h2>
+      <dl>
+        <dt>Subject</dt>
+        <dd>{{ user.sub }}</dd>
+
+        <dt>Email</dt>
+        <dd>{{ user.email }}</dd>
+
+        <dt>Roles</dt>
+        <dd>{{ user.roles.join(', ') }}</dd>
+
+        <dt>Tenant ID</dt>
+        <dd>{{ user.tenantId }}</dd>
+
+        <dt>Issued At</dt>
+        <dd>{{ user.iat * 1000 | date:'medium' }}</dd>
+
+        <dt>Expires</dt>
+        <dd>{{ user.exp * 1000 | date:'medium' }}</dd>
+
+        <dt>Token ID</dt>
+        <dd>{{ user.jti }}</dd>
+      </dl>
+    </article>
+  }
+
+  <article>
+    <h2>{{ page.credentialsHeading }}</h2>
+
+    @if (credentials().length === 0) {
+      <p>{{ page.noCredentials }}</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>{{ page.columns.credentialId }}</th>
+            <th>{{ page.columns.deviceType }}</th>
+            <th>{{ page.columns.backedUp }}</th>
+            <th>{{ page.columns.createdAt }}</th>
+            <th>{{ page.columns.actions }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cred of credentials(); track cred.credentialId) {
+            <tr>
+              <td><code>{{ truncateId(cred.credentialId) }}</code></td>
+              <td>{{ cred.deviceType }}</td>
+              <td>{{ cred.backedUp ? 'Yes' : 'No' }}</td>
+              <td>{{ cred.createdAt | date:'short' }}</td>
+              <td>
+                <button
+                  type="button"
+                  (click)="revoke(cred.credentialId)"
+                  [disabled]="revoking() === cred.credentialId"
+                >
+                  @if (revoking() === cred.credentialId) {
+                    Revoking...
+                  } @else {
+                    {{ page.revokeButton }}
+                  }
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </article>
+</section>

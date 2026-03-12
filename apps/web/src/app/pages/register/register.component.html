@@ -1,0 +1,50 @@
+<section>
+  <header>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.subtitle }}</p>
+  </header>
+
+  <form (ngSubmit)="register()">
+    <fieldset [disabled]="loading()">
+      <label for="email">{{ page.emailLabel }}</label>
+      <input
+        id="email"
+        type="email"
+        [placeholder]="page.emailPlaceholder"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        name="email"
+        autocomplete="username"
+        required
+      />
+
+      <label for="displayName">{{ page.displayNameLabel }}</label>
+      <input
+        id="displayName"
+        type="text"
+        [placeholder]="page.displayNamePlaceholder"
+        [ngModel]="displayName()"
+        (ngModelChange)="displayName.set($event)"
+        name="displayName"
+        autocomplete="name"
+        required
+      />
+
+      @if (error()) {
+        <output role="alert">{{ error() }}</output>
+      }
+
+      <button type="submit">
+        @if (loading()) {
+          <span>Registering...</span>
+        } @else {
+          {{ page.registerButton }}
+        }
+      </button>
+    </fieldset>
+  </form>
+
+  <nav>
+    <p>{{ page.hasAccount }} <a routerLink="/login">{{ page.loginLink }}</a></p>
+  </nav>
+</section>

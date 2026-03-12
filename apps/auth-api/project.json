@@ -1,0 +1,23 @@
+{
+  "name": "auth-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/auth-api/src",
+  "projectType": "application",
+  "tags": ["scope:identity", "type:api"],
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tsx --tsconfig apps/auth-api/tsconfig.json apps/auth-api/src/main.ts",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx tsc --project apps/auth-api/tsconfig.json",
+        "cwd": "{workspaceRoot}"
+      }
+    }
+  }
+}

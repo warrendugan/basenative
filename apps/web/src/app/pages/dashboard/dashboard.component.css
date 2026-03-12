@@ -1,0 +1,129 @@
+:host {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem;
+}
+
+section {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+hgroup > p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+header > button {
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+header > button:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+article {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1.5rem;
+}
+
+dt {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+dd {
+  font-size: 0.875rem;
+  word-break: break-all;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+td {
+  font-size: 0.875rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  background: var(--color-bg);
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-sm);
+}
+
+td > button {
+  padding: 0.35rem 0.75rem;
+  background: transparent;
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+td > button:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--color-error) 10%, transparent);
+}
+
+td > button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -28,7 +28,11 @@
       "@basenative/util-signals": ["libs/shared/util-signals/src/index.ts"],
       "@basenative/util-tenant": ["libs/shared/util-tenant/src/index.ts"],
       "@greenput/domain": ["libs/greenput/domain/src/index.ts"],
-      "@greenput/ui": ["libs/greenput/ui/src/index.ts"]
+      "@greenput/ui": ["libs/greenput/ui/src/index.ts"],
+      "@basenative/shared-types": ["libs/shared/types/src/index.ts"],
+      "@basenative/identity-domain": ["libs/identity/domain/src/index.ts"],
+      "@basenative/identity-data-access": ["libs/identity/data-access/src/index.ts"],
+      "@basenative/shared-auth": ["libs/shared/auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
